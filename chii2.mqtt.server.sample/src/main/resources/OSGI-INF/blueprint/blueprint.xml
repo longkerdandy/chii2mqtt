@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <!-- MQTT Server Storage -->
+    <reference id="mqttstorage"
+               interface="org.chii2.mqtt.server.storage.StorageService"/>
+
+    <!-- MQTT Sample Server -->
+    <bean id="mqttserver" class="org.chii2.mqtt.server.sample.OSGiServer"
+          init-method="init"
+          destroy-method="destroy">
+        <property name="brokerStorage" ref="mqttstorage"/>
+    </bean>
+
+    <!-- MQTT Sample Client -->
+    <bean id="mqttclient" class="org.chii2.mqtt.server.sample.OSGiClient"
+          init-method="init"
+          destroy-method="destroy">
+    </bean>
+
+</blueprint>

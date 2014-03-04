@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <!-- Apache Derby Data Source -->
+    <bean id="datasource" class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
+        <property name="databaseName" value="data/mqtt/server"/>
+    </bean>
+
+    <!-- StorageServiceImpl Bean -->
+    <bean id="persistenceImpl" class="org.chii2.mqtt.server.storage.derby.StorageServiceImpl"
+          init-method="init"
+          destroy-method="destroy">
+        <property name="dataSource" ref="datasource"/>
+    </bean>
+
+    <!-- StorageServiceImpl Service -->
+    <service ref="persistenceImpl" interface="org.chii2.mqtt.server.storage.StorageService"/>
+
+</blueprint>
