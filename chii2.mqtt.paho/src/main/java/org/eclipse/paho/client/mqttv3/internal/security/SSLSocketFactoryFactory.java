@@ -1099,7 +1099,7 @@ public class SSLSocketFactoryFactory {
             if (keyStore == null) {
                 if (keyStoreName == null) {
                     /*
-					 * No keystore in config, XPD keystore not available. Try to
+                     * No keystore in config, XPD keystore not available. Try to
 					 * get config from system properties.
 					 */
                     keyStoreName = getProperty(configID, KEYSTORE, SYSKEYSTORE);
