@@ -117,7 +117,7 @@ public class MQTTUtils {
         // Result
         boolean valid = true;
         // Empty or too long or / in the end
-        if (StringUtils.isBlank(topic) || topic.endsWith("/") || topic.getBytes().length > 32767) {
+        if (StringUtils.isBlank(topic) || topic.endsWith("/") || topic.getBytes().length > 32672 - 23) {
             valid = false;
         } else {
             int multiLevelWildcard = countMatches(topic, "#");
@@ -160,7 +160,7 @@ public class MQTTUtils {
         // Result
         boolean valid = true;
         // Empty or too long or / in the end
-        if (StringUtils.isBlank(topic) || topic.endsWith("/") || topic.getBytes().length > 255) {
+        if (StringUtils.isBlank(topic) || topic.endsWith("/") || topic.getBytes().length > 32672 - 23) {
             valid = false;
         }
         // Contain wildcard

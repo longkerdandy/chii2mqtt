@@ -55,6 +55,8 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public void start() {
+        // Automatically create database (tables)
+        StorageUntils.createTables(dataSource);
     }
 
     @Override

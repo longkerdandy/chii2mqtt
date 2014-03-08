@@ -169,6 +169,9 @@
                             </includes>
                         </fileset>
                         <fileset>
+                            <directory>${basedir}/data/mqtt/server</directory>
+                        </fileset>
+                        <fileset>
                             <directory>${basedir}/data/mqtt/client</directory>
                         </fileset>
                         <fileset>

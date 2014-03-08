@@ -9,7 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.lang.management.ManagementFactory;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -24,19 +24,18 @@ public class StorageServiceImplTest {
     public void before() {
         storage = new StorageServiceImpl();
         EmbeddedDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-        // It's different working directory when build with maven and test with IntelliJ IDEA
-        if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("-agentlib:jdwp")) {
-            dataSource.setDatabaseName("assembly/data/mqtt/server"); // Debug Mode
-        } else {
-            dataSource.setDatabaseName("../assembly/data/mqtt/server"); // Normal Mode
-        }
+        dataSource.setDatabaseName(System.getProperty("java.io.tmpdir") +
+                File.separator + "chii2" +
+                File.separator + "mqtt" +
+                File.separator + "server");
+        dataSource.setCreateDatabase("create");
         storage.setDataSource(dataSource);
+        storage.start();
         storage.clearTable("MESSAGE_ID");
         storage.clearTable("RETAIN");
         storage.clearTable("INFLIGHT");
         storage.clearTable("QOS2");
         storage.clearTable("SUBSCRIPTION");
-        storage.start();
     }
 
     @Test
