@@ -35,7 +35,7 @@
 <a name="about-chii2-mqtt" class="anchor" href="#about-chii2-mqtt"><span class="octicon octicon-link"></span></a>About Chii2 MQTT.</h3>
 
 <p><a href="http://mqtt.org/">MQTT</a> is a machine-to-machine (M2M)/"Internet of Things" connectivity protocol. It was designed as an extremely lightweight publish/subscribe messaging transport.<br>
-Chii2 MQTT provides full <a href="http://www.ibm.com/developerworks/webservices/library/ws-mqtt/index.html">MQTT V3.1 Protocol Specification</a> server side implementation, which means you can use Chii2 MQTT as Message Server (broker). Chii2 MQTT is written purely in Java, designed to be lightweight fast reliable and extensible, it can run in standalone mode or embedded mode. Project is under Apache License v2.</p>
+Chii2 MQTT provides full <a href="http://www.ibm.com/developerworks/webservices/library/ws-mqtt/index.html">MQTT V3.1 Protocol Specification</a> server side implementation. Chii2 MQTT is written purely in Java, designed to be lightweight fast reliable and extensible, it can run as message broker in standalone mode or embedded mode. The project is under Apache License v2.</p>
 
 <h3>
 <a name="roadmap" class="anchor" href="#roadmap"><span class="octicon octicon-link"></span></a>Roadmap</h3>
@@ -73,18 +73,18 @@ To build project from source, you need to install maven on your system. Then clo
 <h3>
 <a name="running-in-osgi" class="anchor" href="#running-in-osgi"><span class="octicon octicon-link"></span></a>Running in OSGi</h3>
 
-<p>Chii2 MQTT is designed to be OSGi compatible, and the derby storage bundle will automatically injected by OSGi Blueprint service. Project shipped with a <a href="https://github.com/longkerdandy/chii2mqtt/tree/master/chii2.mqtt.server.sample">sample server and client</a>, to running the sample:</p>
+<p>Chii2 MQTT is designed to be OSGi compatible, project has provided a <a href="https://github.com/longkerdandy/chii2mqtt/tree/master/chii2.mqtt.server.sample">sample OSGi server</a>. To build and run the sample:</p>
 
 <pre><code>$ mvn clean install
 $ cd assembly
 $ java -jar bin/felix.jar
 </code></pre>
 
-<p>The sample server using OSGi Blueprint to inject derby storage. The init and destory method are also called from Blueprint service:</p>
+<p>The derby storage package (bundle) already configured with Blueprint, an IoC container similar to Spring. The sample server also using Blueprint to inject derby storage. The init and destroy method are called from Blueprint life cycle management:</p>
 
 <pre><code>/**
-* Sample OSGi Server
-*/
+ * Sample OSGi Server
+ */
 public class OSGiServer {
 
     // MQTT Server Configuration
@@ -97,37 +97,32 @@ public class OSGiServer {
     private final Logger logger = LoggerFactory.getLogger(OSGiServer.class);
 
     /**
-    * Injected Storage Service
-    */
+     * Injected Storage Service
+     */
     public void setBrokerStorage(StorageService brokerStorage) {
         this.brokerStorage = brokerStorage;
     }
 
-    public OSGiServer() {
+    /**
+     * OSGi life cycle init
+     */
+    public void init() {
+        logger.info("Chii2 MQTT Server Init.");
         // Init MQTT Server Configuration
         brokerConfiguration = new MQTTServerConfiguration();
         brokerConfiguration.setServerName("Chii2 MQTT Server");
-    }
-
-
-    /**
-    * OSGi life cycle init
-    */
-    public void init() {
-        logger.info("Chii2 MQTT Server Init.");
         // Init MQTT Server
         broker = new MQTTServer(brokerConfiguration, brokerStorage);
         broker.start();
     }
 
     /**
-    * OSGi life cycle destroy
-    */
+     * OSGi life cycle destroy
+     */
     public void destroy() {
         logger.info("Chii2 MQTT Server Destroy.");
         broker.stop();
     }
-}
 </code></pre>
 
 <p>If you don't want to use Blueprint, you can declare the derby storage manually with the same way as running Chii2 MQTT embedded.</p>
