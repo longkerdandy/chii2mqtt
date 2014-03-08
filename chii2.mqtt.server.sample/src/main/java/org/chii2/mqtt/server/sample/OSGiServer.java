@@ -27,18 +27,14 @@ public class OSGiServer {
         this.brokerStorage = brokerStorage;
     }
 
-    public OSGiServer() {
-        // Init MQTT Server Configuration
-        brokerConfiguration = new MQTTServerConfiguration();
-        brokerConfiguration.setServerName("Chii2 MQTT Server");
-    }
-
-
     /**
      * OSGi life cycle init
      */
     public void init() {
         logger.info("Chii2 MQTT Server Init.");
+        // Init MQTT Server Configuration
+        brokerConfiguration = new MQTTServerConfiguration();
+        brokerConfiguration.setServerName("Chii2 MQTT Server");
         // Init MQTT Server
         broker = new MQTTServer(brokerConfiguration, brokerStorage);
         broker.start();
